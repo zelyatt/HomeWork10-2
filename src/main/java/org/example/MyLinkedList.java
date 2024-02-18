@@ -71,12 +71,25 @@ public class MyLinkedList<T> {
     }
 
     public T get(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Invalid index");
+        }
+
         Node<T> current = head;
         for (int i = 0; i < index; i++) {
+            if (current == null) {
+                throw new IndexOutOfBoundsException("Invalid index");
+            }
             current = current.next;
         }
+
+        if (current == null) {
+            throw new IndexOutOfBoundsException("Invalid index");
+        }
+
         return current.data;
     }
+
 
     @Override
     public String toString() {
