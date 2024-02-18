@@ -1,29 +1,30 @@
 package org.example;
 
-public class MyLinkedList<E> {
-    private Node head;
-    private Node tail;
+public class MyLinkedList<T> {
+    private Node<T> head;
+    private Node<T> tail;
     private int size;
 
-    public class Node {
-        E data;
-        Node previous;
-        Node next;
+    public class Node<T> {
+        T data;
+        Node<T> previous;
+        Node<T> next;
 
-        public Node(E value) {
+        public Node(T value) {
             this.data = value;
             this.previous = null;
             this.next = null;
         }
     }
+
     public MyLinkedList() {
         head = null;
         tail = null;
         size = 0;
     }
 
-    public void add(E value) {
-        Node newNode = new Node(value);
+    public void add(T value) {
+        Node<T> newNode = new Node<>(value);
         if (head == null) {
             head = newNode;
             tail = newNode;
@@ -35,19 +36,12 @@ public class MyLinkedList<E> {
         size++;
     }
 
-    public boolean clear() {
-        head = null;
-        tail = null;
-        size = 0;
-        return false;
-    }
-
-    public int size() {
-        return size;
-    }
-
     public void remove(int index) {
-        Node current = head;
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Invalid index");
+        }
+
+        Node<T> current = head;
         for (int i = 0; i < index; i++) {
             current = current.next;
         }
@@ -65,10 +59,29 @@ public class MyLinkedList<E> {
         }
         size--;
     }
+
+    public void clear() {
+        head = null;
+        tail = null;
+        size = 0;
+    }
+
+    public int size() {
+        return size;
+    }
+
+    public T get(int index) {
+        Node<T> current = head;
+        for (int i = 0; i < index; i++) {
+            current = current.next;
+        }
+        return current.data;
+    }
+
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder("[");
-        Node current = head;
+        Node<T> current = head;
         while (current != null) {
             result.append(current.data);
             if (current.next != null) {
@@ -78,13 +91,6 @@ public class MyLinkedList<E> {
         }
         result.append("]");
         return result.toString();
-    }
-    public E get(int index) {
-        Node current = head;
-        for (int i = 0; i < index; i++) {
-            current = current.next;
-        }
-        return current.data;
     }
 
     public static void main(String[] args) {
@@ -98,10 +104,12 @@ public class MyLinkedList<E> {
         myLinkedList.remove(2);
         System.out.println(myLinkedList);
 
-        System.out.println(myLinkedList.size);
+        System.out.println(myLinkedList.size());
 
         System.out.println(myLinkedList.get(2));
 
-        System.out.println(myLinkedList.clear());
+        myLinkedList.clear();
+        System.out.println(myLinkedList);
+        System.out.println(myLinkedList.size());
     }
 }
