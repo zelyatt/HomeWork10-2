@@ -15,10 +15,17 @@ public class MyArrayList<E> {
     }
 
     public void add(E value) {
+        if (size == array.length) {
+        }
         array[size++] = value;
     }
 
-    public void removeLastElement(int index) {
+
+    public void remove(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        }
+
         for (int i = index; i < size - 1; i++) {
             array[i] = array[i + 1];
         }
@@ -26,10 +33,8 @@ public class MyArrayList<E> {
         size--;
     }
 
-    public void arrayClear() {
-        for (int i = 0; i < size; i++) {
-            array[i] = null;
-        }
+    public void clear() {
+        Arrays.fill(array, null);
         size = 0;
     }
 
@@ -37,8 +42,11 @@ public class MyArrayList<E> {
         return size;
     }
 
-    public Object get(int index) {
-        return array[index];
+    public E get(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        }
+        return (E) array[index];
     }
 
     public static void main(String[] args) {
@@ -51,16 +59,13 @@ public class MyArrayList<E> {
         System.out.println(list.get(2));
 
         System.out.println(Arrays.toString(list.array));
+
+        list.remove(2);
         System.out.println(Arrays.toString(list.array));
 
-        list.removeLastElement(2);
-        System.out.println( Arrays.toString(list.array));
-
-        list.arrayClear();
+        list.clear();
         System.out.println(Arrays.toString(list.array));
 
         System.out.println(list.size());
-
-
     }
 }
